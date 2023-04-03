@@ -48,6 +48,8 @@ class Client(discord.Client):
         self.conversation_history = trim_conversation_history(self.conversation_history)
 
         try:
+            await message.channel.typing()
+            loading_message = await message.channel.send("Typing...")
             response = openai.ChatCompletion.create(
                 model="gpt-4",
                 messages=self.conversation_history
@@ -75,6 +77,7 @@ class Client(discord.Client):
             for index, part in enumerate(parts):
                 try:
                     print(f"GPT4: {part}")
+                    await loading_message.delete()
                     await message.channel.send(part)
                 except discord.errors.Forbidden:
                     print("GPT4: I am not able to send a message. Do I have the correct permissions on your server?")
