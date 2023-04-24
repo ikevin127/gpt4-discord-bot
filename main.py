@@ -48,7 +48,6 @@ class Client(discord.Client):
         self.conversation_history = trim_conversation_history(self.conversation_history)
 
         try:
-            await message.channel.typing()
             loading_message = await message.channel.send("Typing...")
             response = openai.ChatCompletion.create(
                 model="gpt-4",
